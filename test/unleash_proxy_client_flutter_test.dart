@@ -778,7 +778,14 @@ void main() {
 
     final variant = unleash.getVariant('flutter.on');
 
-    expect(variant, Variant(name: 'disabled', enabled: false));
+    expect(
+      variant,
+      Variant(
+        name: 'disabled',
+        enabled: false,
+        payload: <String, dynamic>{},
+      ),
+    );
   });
 
   test('can get default variant for non-existent toggle', () async {
@@ -793,7 +800,14 @@ void main() {
 
     final variant = unleash.getVariant('non.existent.toggle');
 
-    expect(variant, Variant(name: 'disabled', enabled: false));
+    expect(
+      variant,
+      Variant(
+        name: 'disabled',
+        enabled: false,
+        payload: <String, dynamic>{},
+      ),
+    );
   });
 
   test('can get variant', () async {
@@ -808,7 +822,14 @@ void main() {
 
     final variant = unleash.getVariant('flutter-variant');
 
-    expect(variant, Variant(name: 'flutter-variant', enabled: true));
+    expect(
+      variant,
+      Variant(
+        name: 'flutter-variant',
+        enabled: true,
+        payload: <String, dynamic>{},
+      ),
+    );
   });
 
   test('should not send metrics on an interval if bucket is empty', () {
@@ -997,9 +1018,14 @@ void main() {
         storageProvider: storageProvider,
         bootstrap: {
           'flutter-on': ToggleConfig(
+            enabled: true,
+            impressionData: false,
+            variant: Variant(
               enabled: true,
-              impressionData: false,
-              variant: Variant(enabled: true, name: 'variant-name'))
+              name: 'variant-name',
+              payload: <String, dynamic>{},
+            ),
+          ),
         },
         fetcher: getMock);
 
@@ -1034,9 +1060,14 @@ void main() {
         appName: 'flutter-test',
         bootstrap: {
           'flutter-on': ToggleConfig(
+            enabled: true,
+            impressionData: false,
+            variant: Variant(
               enabled: true,
-              impressionData: false,
-              variant: Variant(enabled: true, name: 'variant-name'))
+              name: 'variant-name',
+              payload: <String, dynamic>{},
+            ),
+          ),
         },
         storageProvider: InMemoryStorageProvider(),
         fetcher: getMock);
@@ -1059,20 +1090,37 @@ void main() {
         appName: 'flutter-test',
         bootstrap: {
           'flutter-on': ToggleConfig(
+            enabled: false,
+            impressionData: true,
+            variant: Variant(
               enabled: false,
-              impressionData: true,
-              variant: Variant(enabled: false, name: 'variant-name'))
+              name: 'variant-name',
+              payload: <String, dynamic>{},
+            ),
+          )
         },
         storageProvider: InMemoryStorageProvider(),
         fetcher: getMock);
 
-    expect(unleash.getVariant('flutter-on'),
-        Variant(enabled: false, name: 'variant-name'));
+    expect(
+      unleash.getVariant('flutter-on'),
+      Variant(
+        enabled: false,
+        name: 'variant-name',
+        payload: <String, dynamic>{},
+      ),
+    );
 
     await unleash.start();
 
-    expect(unleash.getVariant('flutter-on'),
-        Variant(enabled: false, name: 'disabled'));
+    expect(
+      unleash.getVariant('flutter-on'),
+      Variant(
+        enabled: false,
+        name: 'disabled',
+        payload: <String, dynamic>{},
+      ),
+    );
   });
 
   test('by default bootstrap overrides local storage', () async {
@@ -1087,9 +1135,14 @@ void main() {
         storageProvider: storageProvider,
         bootstrap: {
           'flutter-on': ToggleConfig(
-              enabled: false,
-              impressionData: false,
-              variant: Variant(enabled: true, name: 'bootstrap-variant-name'))
+            enabled: false,
+            impressionData: false,
+            variant: Variant(
+              enabled: true,
+              name: 'bootstrap-variant-name',
+              payload: <String, dynamic>{},
+            ),
+          ),
         },
         fetcher: getMock);
 
@@ -1115,9 +1168,14 @@ void main() {
         bootstrapOverride: false,
         bootstrap: {
           'flutter-on': ToggleConfig(
-              enabled: false,
-              impressionData: false,
-              variant: Variant(enabled: true, name: 'bootstrap-variant-name'))
+            enabled: false,
+            impressionData: false,
+            variant: Variant(
+              enabled: true,
+              name: 'bootstrap-variant-name',
+              payload: <String, dynamic>{},
+            ),
+          ),
         },
         fetcher: getMock);
 
@@ -1142,9 +1200,14 @@ void main() {
         bootstrapOverride: false,
         bootstrap: {
           'flutter-on': ToggleConfig(
+            enabled: true,
+            impressionData: false,
+            variant: Variant(
               enabled: true,
-              impressionData: false,
-              variant: Variant(enabled: true, name: 'variant-name'))
+              name: 'variant-name',
+              payload: <String, dynamic>{},
+            ),
+          )
         },
         fetcher: getMock);
 
